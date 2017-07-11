@@ -6,6 +6,16 @@ dev: [![Build status](https://ci.appveyor.com/api/projects/status/9uf3wyys7ky777
 
 # PSDscResources
 
+1. This is mock entry 1 to test failing on 'ordered' style
+2. This is mock entry 2 to test failing on 'ordered' style
+3. This is mock entry 3 to test failing on 'ordered' style
+4. This is mock entry 4 to test failing on 'ordered' style
+
+1. This is mock entry 1 to test 'one' style
+1. This is mock entry 2 to test 'one' style
+1. This is mock entry 3 to test 'one' style
+1. This is mock entry 4 to test 'one' style
+
 PSDscResources is the new home of the in-box resources from PSDesiredStateConfiguration.
 
 These resources are a combination of those in the in-box PSDesiredStateConfiguration module as well as community contributions from our experimental [xPSDesiredStateConfiguration](https://github.com/PowerShell/xPSDesiredStateConfiguration) module on GitHub.
