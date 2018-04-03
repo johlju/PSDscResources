@@ -2,7 +2,7 @@
 #      environment configuration  #
 #---------------------------------#
 version: 2.4.{build}.0
-os: Visual Studio 2015
+os: Visual Studio 2017
 install:
     - git clone https://github.com/johlju/DscResource.Tests
     - ps: Push-Location
@@ -34,7 +34,7 @@ build: false
 
 test_script:
     - ps: |
-        Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo
+        Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -RunTestInOrder
 
 #---------------------------------#
 #      deployment configuration   #

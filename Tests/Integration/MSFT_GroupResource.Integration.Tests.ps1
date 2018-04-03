@@ -1,5 +1,5 @@
 ﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '')]
-param ()
+param()
 
 $errorActionPreference = 'Stop'
 Set-StrictMode -Version 'Latest'
@@ -29,7 +29,7 @@ try
             $script:confgurationNoMembersFilePath = Join-Path -Path $PSScriptRoot -ChildPath 'MSFT_GroupResource_NoMembers.config.ps1'
             $script:confgurationWithMembersFilePath = Join-Path -Path $PSScriptRoot -ChildPath 'MSFT_GroupResource_Members.config.ps1'
             $script:confgurationWithMembersToIncludeExcludeFilePath = Join-Path -Path $PSScriptRoot -ChildPath 'MSFT_GroupResource_MembersToIncludeExclude.config.ps1'
-                                                                            
+
             # Fake users for testing
             $testUsername1 = 'TestUser1'
             $testUsername2 = 'TestUser2'
@@ -80,7 +80,7 @@ try
 
             try
             {
-                { 
+                {
                     . $script:confgurationWithMembersFilePath -ConfigurationName $configurationName
                     & $configurationName -OutputPath $TestDrive @resourceParameters
                     Start-DscConfiguration -Path $TestDrive -ErrorAction 'Stop' -Wait -Force
@@ -108,7 +108,7 @@ try
 
             Test-GroupExists -GroupName $testGroupName | Should Be $true
 
-            { 
+            {
                 . $script:confgurationNoMembersFilePath -ConfigurationName $configurationName
                 & $configurationName -OutputPath $TestDrive @resourceParameters
                 Start-DscConfiguration -Path $TestDrive -ErrorAction 'Stop' -Wait -Force
@@ -129,7 +129,7 @@ try
 
             Test-GroupExists -GroupName $testGroupName | Should Be $true
 
-            { 
+            {
                 . $script:confgurationWithMembersToIncludeExcludeFilePath -ConfigurationName $configurationName
                 & $configurationName -OutputPath $TestDrive @resourceParameters
                 Start-DscConfiguration -Path $TestDrive -ErrorAction 'Stop' -Wait -Force
@@ -154,7 +154,7 @@ try
 
             try
             {
-                { 
+                {
                     . $script:confgurationWithMembersFilePath -ConfigurationName $configurationName
                     & $configurationName -OutputPath $TestDrive @resourceParameters
                     Start-DscConfiguration -Path $TestDrive -ErrorAction 'Stop' -Wait -Force
@@ -191,7 +191,7 @@ try
 
             try
             {
-                { 
+                {
                     . $script:confgurationWithMembersToIncludeExcludeFilePath -ConfigurationName $configurationName
                     & $configurationName -OutputPath $TestDrive @resourceParameters
                     Start-DscConfiguration -Path $TestDrive -ErrorAction 'Stop' -Wait -Force
@@ -228,7 +228,7 @@ try
 
             try
             {
-                { 
+                {
                     . $script:confgurationWithMembersToIncludeExcludeFilePath -ConfigurationName $configurationName
                     & $configurationName -OutputPath $TestDrive @resourceParameters
                     Start-DscConfiguration -Path $TestDrive -ErrorAction 'Stop' -Wait -Force
@@ -262,7 +262,7 @@ try
 
             try
             {
-                { 
+                {
                     . $script:confgurationWithMembersFilePath -ConfigurationName $configurationName
                     & $configurationName -OutputPath $TestDrive @resourceParameters
                     Start-DscConfiguration -Path $TestDrive -ErrorAction 'Stop' -Wait -Force
