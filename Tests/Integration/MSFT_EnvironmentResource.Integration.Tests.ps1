@@ -33,7 +33,7 @@ try
             $retrievedVar = Get-TargetResource -Name $envVar
 
             # Verify the environmnet variable $envVar is successfully retrieved
-            $retrievedVar.Ensure | Should Be 'Present'
+            $retrievedVar.Ensure | Should Be 'Absent'
 
             $regItem = Get-Item -Path 'HKLM:\\System\\CurrentControlSet\\Control\\Session Manager\\Environment'
             $matchVar = $regItem.GetValue($envVar)
