@@ -73,7 +73,7 @@ try
                 $getTargetResourceResult = Get-TargetResource @getTargetResourceParameters
 
                 It 'Should return a hashtable' {
-                    $getTargetResourceResult -is [Hashtable] | Should Be $true
+                    $getTargetResourceResult -is [Hashtable] | Should Be $false
                 }
 
                 It 'Should return 5 hashtable properties' {
