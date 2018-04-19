@@ -2,7 +2,7 @@
 #      environment configuration  #
 #---------------------------------#
 version: 2.4.{build}.0
-os: Visual Studio 2015
+image: Visual Studio 2015
 install:
     - git clone https://github.com/johlju/DscResource.Tests
     - ps: Push-Location
@@ -17,6 +17,8 @@ install:
     - ps: Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
     - ps: Invoke-AppveyorInstallTask
 
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 #---------------------------------#
 #      build configuration        #
 #---------------------------------#
@@ -28,8 +30,17 @@ build: false
 #---------------------------------#
 
 test_script:
-    - ps: |
-        Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo
+- pwsh: Install-Module -Name Pester
+- pwsh: |
+    Write-Verbose -Message "Tests are running in PSVersion $($PSVersionTable.PSVersion)" -Verbose
+    Write-Verbose -Message "Project folder is: $($env:APPVEYOR_BUILD_FOLDER)" -Verbose
+    Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
+    Get-Module | % { Write-Verbose "Loaded module: $($_.Name)" -Verbose }
+    Get-Command -Module AppVeyor | % { Write-Verbose "Command: $($_.Name)" -Verbose }
+    Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo
+#- ps: Add-AppveyorTest -Name "Windows PowerShell" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
+#- pwsh: |
+#    Add-AppveyorTest -Name "PowerShell Core" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
 
 #---------------------------------#
 #      deployment configuration   #
