@@ -44,22 +44,6 @@ for:
 -
   matrix:
     only:
-      - configuration: WMF
-
-  test_script:
-    - ps: |
-        Write-Verbose -Message "Returned after restart with Windows PowerShell v$($PSVersionTable.PSVersion)" -Verbose
-        if ($PSVersionTable.PSVersion -lt [Version] '5.1')
-        {
-            throw 'WMF 5.1 install failed'
-        }
-    - ps: Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
-    - ps: Invoke-AppveyorInstallTask
-    - ps: Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
-
--
-  matrix:
-    only:
       - configuration: CORE
 
   test_script:
@@ -78,6 +62,23 @@ for:
         Get-Module | % { Write-Verbose "Loaded module: $($_.Name)" -Verbose }
         Get-Command -Module AppVeyor | % { Write-Verbose "Command: $($_.Name)" -Verbose }
         Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
+
+-
+  matrix:
+    only:
+      - configuration: WMF
+
+  test_script:
+    - ps: |
+        Write-Verbose -Message "Returned after restart with Windows PowerShell v$($PSVersionTable.PSVersion)" -Verbose
+        if ($PSVersionTable.PSVersion -lt [Version] '5.1')
+        {
+            throw 'WMF 5.1 install failed'
+        }
+    - ps: Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
+    - ps: Invoke-AppveyorInstallTask
+    - ps: Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
+
 
 #- ps: Add-AppveyorTest -Name "Windows PowerShell" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
 #- pwsh: |
