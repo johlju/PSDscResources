@@ -65,9 +65,7 @@ for:
 
   test_script:
     - pwsh: |
-        Write-Verbose -Message "Project folder is: $($env:APPVEYOR_BUILD_FOLDER)" -Verbose
-    - pwsh: |
-        Invoke-AppveyorInstallTask
+        Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
         Get-Module | % { Write-Verbose "Loaded module: $($_.Name)" -Verbose }
         Get-Command -Module AppVeyor | % { Write-Verbose "Command: $($_.Name)" -Verbose }
         Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
@@ -108,8 +106,6 @@ for:
   #---------------------------------#
 
   test_script:
-    - ps: |
-        Write-Verbose -Message "Project folder is: $($env:APPVEYOR_BUILD_FOLDER)" -Verbose
     - ps: Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
 
 
