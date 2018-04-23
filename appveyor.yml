@@ -59,7 +59,8 @@ for:
   #---------------------------------#
 
   test_script:
-    - pwsh: Write-Verbose -Message "Project folder is: $($env:APPVEYOR_BUILD_FOLDER)" -Verbose
+    - pwsh: |
+        Write-Verbose -Message "Project folder is: $($env:APPVEYOR_BUILD_FOLDER)" -Verbose
     - pwsh: |
         Invoke-AppveyorInstallTask
         Get-Module | % { Write-Verbose "Loaded module: $($_.Name)" -Verbose }
@@ -102,7 +103,8 @@ for:
   #---------------------------------#
 
   test_script:
-    - ps: Write-Verbose -Message "Project folder is: $($env:APPVEYOR_BUILD_FOLDER)" -Verbose
+    - ps: |
+        Write-Verbose -Message "Project folder is: $($env:APPVEYOR_BUILD_FOLDER)" -Verbose
     - ps: Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
 
 
