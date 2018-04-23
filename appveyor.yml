@@ -50,8 +50,13 @@ for:
         {
             throw 'Wrong PowerShell Core version installed.'
         }
+    - ps: |
+        # Must run this on Windows PowerShell to install Package Provider.
+        Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
+        Invoke-AppveyorInstallTask
     - pwsh: |
         Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
+        # This will ignore installing Package Provider when edition is CORE.
         Invoke-AppveyorInstallTask
 
   #---------------------------------#
