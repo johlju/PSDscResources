@@ -27,21 +27,6 @@ install:
     - ps: Start-Sleep 5
     - ps: Restart-Computer -Force
     - ps: Start-Sleep 5
-    - ps: |
-        Write-Verbose -Message "Returned after restart with Windows PowerShell v$($PSVersionTable.PSVersion)" -Verbose
-        if ($PSVersionTable.PSVersion -lt [Version] '5.1')
-        {
-            throw 'WMF 5.1 install failed'
-        }
-    # Bug in $PSVersionTable.PSVersion in the preview version https://github.com/PowerShell/PowerShell/issues/6482.
-    - pwsh: |
-        Write-Verbose -Message "Returned after restart with PowerShell Core v$($PSVersionTable.PSVersion.ToString())" -Verbose
-#        if ($PSVersionTable.PSVersion -lt [Version] ('6.1'))
-#        {
-#            throw 'WMF 5.1 install failed'
-#        }
-    - ps: Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
-#    - ps: Invoke-AppveyorInstallTask
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -62,6 +47,13 @@ for:
       - configuration: WMF
 
   test_script:
+    - ps: |
+        Write-Verbose -Message "Returned after restart with Windows PowerShell v$($PSVersionTable.PSVersion)" -Verbose
+        if ($PSVersionTable.PSVersion -lt [Version] '5.1')
+        {
+            throw 'WMF 5.1 install failed'
+        }
+    - ps: Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
     - ps: Invoke-AppveyorInstallTask
     - ps: Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
 
@@ -71,6 +63,13 @@ for:
       - configuration: CORE
 
   test_script:
+    - pwsh: |
+        # Bug in $PSVersionTable.PSVersion in the preview version https://github.com/PowerShell/PowerShell/issues/6482.
+        Write-Verbose -Message "PowerShell Core v$($PSVersionTable.PSVersion.ToString())" -Verbose
+#        if ($PSVersionTable.PSVersion -lt [Version] ('6.1'))
+#        {
+#            throw 'WMF 5.1 install failed'
+#        }
     - pwsh: Invoke-AppveyorInstallTask
     - pwsh: |
         Write-Verbose -Message "Tests are running in PSVersion $($PSVersionTable.PSVersion)" -Verbose
