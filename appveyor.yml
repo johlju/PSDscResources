@@ -13,17 +13,23 @@ install:
     - git checkout fix-pscore
     - ps: Pop-Location
     - ps: |
-        # Download and install latest PowerShell Core version.
-        $msiPath = "$env:TEMP\PowerShellCore.msi"
-        (New-Object Net.WebClient).DownloadFile('https://github.com/PowerShell/PowerShell/releases/download/v6.0.2/PowerShell-6.0.2-win-x64.msi', $msiPath)
-        Write-Verbose 'Installing PowerShell Core' -Verbose
-        Start-Process 'msiexec.exe' -Wait -ArgumentList "/i $msiPath /quiet"
-        Remove-Item $msiPath
-        $env:Path = "$env:ProgramFiles\PowerShell\6.0.2;$env:Path"
+        if ($env:CONFIGURATION -eq 'CORE')
+        {
+            # Download and install latest PowerShell Core version.
+            $msiPath = "$env:TEMP\PowerShellCore.msi"
+            (New-Object Net.WebClient).DownloadFile('https://github.com/PowerShell/PowerShell/releases/download/v6.0.2/PowerShell-6.0.2-win-x64.msi', $msiPath)
+            Write-Verbose 'Installing PowerShell Core' -Verbose
+            Start-Process 'msiexec.exe' -Wait -ArgumentList "/i $msiPath /quiet"
+            Remove-Item $msiPath
+            $env:Path = "$env:ProgramFiles\PowerShell\6.0.2;$env:Path"
+        }
     - ps: |
-        # Download and install latest Windows PowerShell version.
-        Import-Module -Name .\Tests\TestHelpers\WMF5Dot1Installation.psm1 -Force
-        Install-Wmf5Dot1
+        if ($env:CONFIGURATION -eq 'WMF')
+        {
+            # Download and install latest Windows PowerShell version.
+            Import-Module -Name .\Tests\TestHelpers\WMF5Dot1Installation.psm1 -Force
+            Install-Wmf5Dot1
+        }
     - ps: Start-Sleep 5
     - ps: Restart-Computer -Force
     - ps: Start-Sleep 5
