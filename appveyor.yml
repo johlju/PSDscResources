@@ -19,7 +19,6 @@ install:
         Write-Verbose 'Installing PowerShell Core' -Verbose
         Start-Process 'msiexec.exe' -Wait -ArgumentList "/i $msiPath /quiet"
         Remove-Item $msiPath
-        $env:Path = "$env:ProgramFiles\PowerShell\6.0.2;$env:Path"
     - ps: |
         # Download and install latest Windows PowerShell version.
         Import-Module -Name .\Tests\TestHelpers\WMF5Dot1Installation.psm1 -Force
@@ -47,6 +46,7 @@ for:
       - configuration: CORE
 
   test_script:
+    - ps: $env:Path = "$env:ProgramFiles\PowerShell\6.0.2;$env:Path"
     - pwsh: |
         # Bug in $PSVersionTable.PSVersion in the preview version https://github.com/PowerShell/PowerShell/issues/6482.
         Write-Verbose -Message "PowerShell Core v$($PSVersionTable.PSVersion.ToString())" -Verbose
