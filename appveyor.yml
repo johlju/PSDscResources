@@ -71,9 +71,6 @@ for:
       - configuration: CORE
 
   test_script:
-    - pwsh: Invoke-Script
-
-  test_script:
     - pwsh: Invoke-AppveyorInstallTask
     - pwsh: |
         Write-Verbose -Message "Tests are running in PSVersion $($PSVersionTable.PSVersion)" -Verbose
