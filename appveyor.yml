@@ -45,6 +45,14 @@ for:
     only:
       - configuration: CORE
 
+  install:
+    - git clone https://github.com/johlju/DscResource.Tests
+    - ps: Push-Location
+    - ps: cd "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests"
+    - git checkout fix-pscore
+    - ps: Pop-Location
+    - ps: Write-Verbose 'WENT HERE' -Verbose
+
   test_script:
     - ps: $env:Path = "$env:ProgramFiles\PowerShell\6.0.2;$env:Path"
     - pwsh: |
