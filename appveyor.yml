@@ -3,8 +3,8 @@
 #---------------------------------#
 version: 2.4.{build}.0
 configuration:
-    - WMF
     - CORE
+    - WMF
 image: Visual Studio 2015
 install:
     - git clone https://github.com/johlju/DscResource.Tests
