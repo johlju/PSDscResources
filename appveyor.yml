@@ -40,14 +40,14 @@ install:
             throw 'WMF 5.1 install failed'
         }
     - ps: |
-        # Must add this so that 'pwsh:' finds 'pwsh'.
+        # Must add this path $env:Path so that 'pwsh:' finds 'pwsh'.
         $env:Path = "$env:ProgramFiles\PowerShell\6.0.2;$env:Path"
         Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
-        # Must run this on Windows PowerShell to install Package Provider.
+        # Must run this on Windows PowerShell to install Package Provider and Pester.
         Invoke-AppveyorInstallTask
     - pwsh: |
         Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
-        # This will ignore installing Package Provider when edition is CORE.
+        # Installs Pester, but this will ignore installing Package Provider when edition is CORE.
         Invoke-AppveyorInstallTask
 
 on_finish:
@@ -71,9 +71,17 @@ for:
 
   test_script:
     - pwsh: |
-        # Must load the module here again, for each pwsh started has it's own session.
+        $appVeyorAddTest = @{
+            Framework = NUnit
+            Filename = pwsh.exe
+            Outcome = Passed
+            Duration = 1000
+        }
+        appveyor AddTest "PowerShell Core" @appVeyorAddTest
+        # Must load the module here again, because each pwsh started has it's own session.
         Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
         Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
+
 
 -
   matrix:
