@@ -72,15 +72,6 @@ for:
 
   test_script:
     - pwsh: |
-        & "C:\Program Files\AppVeyor\BuildAgent\appveyor" AddTest "PowerShell Core 1" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
-        & appveyor AddTest "PowerShell Core 2" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
-        $appVeyorAddTest = @{
-            Framework = NUnit
-            Filename = pwsh.exe
-            Outcome = Passed
-            Duration = 1000
-        }
-        & appveyor AddTest "PowerShell Core 3" @appVeyorAddTest
         # Must load the module here again, because each pwsh started has it's own session.
         Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
         Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
@@ -95,6 +86,8 @@ for:
     - ps: Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
 
 
+        # & "C:\Program Files\AppVeyor\BuildAgent\appveyor" AddTest "PowerShell Core 1" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
+        # & appveyor AddTest "PowerShell Core 2" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
 #- ps: Add-AppveyorTest -Name "Windows PowerShell" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
 #- pwsh: |
 #    Add-AppveyorTest -Name "PowerShell Core" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
