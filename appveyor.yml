@@ -44,15 +44,15 @@ install:
         # Must add this path $env:Path so that 'pwsh:' finds 'pwsh'.
         $env:Path = "$env:ProgramFiles\PowerShell\6.0.2;$env:Path"
         Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
-        # Must run this on Windows PowerShell to install Package Provider and Pester.
+        # Installs Nuget Package Provider and Pester for Windows PowerShell
+        # Nuget Package Provider can only be installed on WMF.
         Invoke-AppveyorInstallTask
     - pwsh: |
         Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
-        # Installs Pester, but this will ignore installing Package Provider when edition is CORE.
+        # Installs Pester in PowerShell Core.
+        # This function will ignore installing Package Provider when
+        # edition is CORE (see above).
         Invoke-AppveyorInstallTask
-
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 #---------------------------------#
 #      build configuration        #
@@ -76,7 +76,6 @@ for:
         Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
         Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
 
-
 -
   matrix:
     only:
@@ -84,13 +83,6 @@ for:
 
   test_script:
     - ps: Invoke-AppveyorTestScriptTask -CodeCoverage -CodeCovIo -ExcludeTag @()
-
-
-        # & "C:\Program Files\AppVeyor\BuildAgent\appveyor" AddTest "PowerShell Core 1" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
-        # & appveyor AddTest "PowerShell Core 2" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
-#- ps: Add-AppveyorTest -Name "Windows PowerShell" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
-#- pwsh: |
-#    Add-AppveyorTest -Name "PowerShell Core" -Framework NUnit -Filename pwsh.exe -Outcome Passed -Duration 1000
 
 #---------------------------------#
 #      deployment configuration   #
