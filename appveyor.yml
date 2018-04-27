@@ -7,11 +7,12 @@ configuration:
     - WMF
 image: Visual Studio 2015
 install:
+    - choco install codecov
     - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
     - git clone https://github.com/johlju/DscResource.Tests
     - ps: Push-Location
     - ps: cd "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests"
-    - git checkout fix-pscore
+    - git checkout debug-codecov
     - ps: Pop-Location
     - ps: |
         # Download and install latest PowerShell Core version.
