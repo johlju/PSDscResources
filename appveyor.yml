@@ -8,11 +8,7 @@ configuration:
 image: Visual Studio 2015
 install:
     - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-    - git clone https://github.com/johlju/DscResource.Tests
-    - ps: Push-Location
-    - ps: cd "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests"
-    - git checkout fix-pscore
-    - ps: Pop-Location
+    - git clone https://github.com/PowerShell/DscResource.Tests
     - ps: |
         # Download and install latest PowerShell Core version.
         $msiPath = "$env:TEMP\PowerShellCore.msi"
